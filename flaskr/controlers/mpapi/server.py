@@ -2,7 +2,7 @@ from .storage import PickleStorage
 from .token import TokenClass
 from .face import FaceRecognition
 from .robot import TulingRobot
-from ..spiderapi.spider import BookSpider
+from ..spiderapi.bookspider import BookSpider
 
 class WechatServer:
     def __init__(self, config=None, atStorage=None):
