@@ -16,6 +16,7 @@ class BookSpider(BaseSpider):
 
     def find_all(self):
         sorts = [23, 25, 26, 27, 28, 29, 55]
+        # sorts = [23]
         results = []
         try:
             pool = Pool()

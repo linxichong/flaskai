@@ -16,6 +16,10 @@ class Config:
     # 图灵机器人
     TULING_API_URL = 'http://openapi.tuling123.com/openapi/api/v2'
     TULING_API_KEY = 'c9dd7250422742bc8f0405b12c655b6c'
+    # 消除照片背景
+    REMOVEBG_API_URL = 'https://api.remove.bg/v1.0/removebg'
+    REMOVEBG_API_KEY = 'VM86pZ5o5ZMAqeLkgzujaLuv'
+
 
 class Development(Config):
     SECRET_KEY = 'dev'

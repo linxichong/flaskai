@@ -6,8 +6,8 @@ def download(url, name):
     r = requests.get(url)
     with open('{}/img-{}.jpg'.format(TEMP_FILE_PATH, time.strftime("%Y_%m_%d%H_%M_%S", time.localtime())), 'wb') as fd:
         fd.write(r.content)
-    if os.path.getsize(fd.name) >= 1048576:
-        return ''
+    # if os.path.getsize(fd.name) >= 1048576:
+    #     return ''
     return os.path.basename(fd.name)
 
 

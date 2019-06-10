@@ -3,6 +3,7 @@ from .token import TokenClass
 from .face import FaceRecognition
 from .robot import TulingRobot
 from ..spiderapi.bookspider import BookSpider
+from .removeBg import RemoveBackgroud
 
 class WechatServer:
     def __init__(self, config=None, atStorage=None):
@@ -12,6 +13,7 @@ class WechatServer:
         self.face = FaceRecognition(self)
         self.robot = TulingRobot(self)
         self.book_spider = BookSpider(self)
+        self.rmBg = RemoveBackgroud(self)
     
     def access_token(self, fn):
         return self.token.access_token(fn)
