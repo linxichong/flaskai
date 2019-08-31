@@ -131,8 +131,11 @@ def handle_func_context(msg):
             return make_response(resp_xml)
         else:
             is_back = True
-    elif msg.type == 'text' and msg.content == 'b':
-        is_back = True
+    elif msg.type == 'text':
+        if msg.content == 'b':
+            is_back = True
+        elif msg.content == 't':
+            wechat.rmBg.add_bgcolor('img-2019_08_3123_35_01.jpg_no_bg.png')
 
     if is_back:
         command_domain.clear()
@@ -171,46 +174,6 @@ def call_tuling_robot(msg):
         resp_xml = get_error_reply(msg)
 
     return resp_xml
-
-
-# def handle_text_msg(msg):
-#     resp_xml, content = '', None
-#     if msg.type == 'voice':
-#         content = msg.recognition
-#     elif msg.type == 'text':
-#         content = msg.content
-
-#     if content == 'm4':
-#         if msg.source in command_domain:
-#             command_domain.pop(msg.source)
-#         resp_xml = create_reply(get_menu(commands), message=msg, render=True)
-#     elif command_domain.get(msg.source) == None:
-#         value = commands.get(content)
-#         # 图灵机器人需要认证暂时关闭
-#         # if content == 'm1':
-#         #     resp_xml = create_reply('%s[功能开启]' %
-#         #                             value, message=msg, render=True)
-#         #     command_domain[msg.source] = content
-#         if content == 'm2':
-#             resp_xml = create_reply('%s[功能开启]' %
-#                                     value, message=msg, render=True)
-#             command_domain[msg.source] = content
-#         elif content == 'm3':
-#             resp_xml = create_reply('%s[功能开启]' %
-#                                     value, message=msg, render=True)
-#             command_domain[msg.source] = content
-#         else:
-#             if msg.source in command_domain:
-#                 command_domain.pop(msg.source)
-#             resp_xml = create_reply(
-#                 get_menu(commands), message=msg, render=True)
-#     else:
-#         # if command_domain.get(msg.source) == 'm1':
-#         #     text = wechat.robot.get_reply(content)
-#         #     resp_xml = create_reply(text, message=msg, render=True)
-#         if command_domain.get(msg.source) == 'm2':
-#             resp_xml = find_novel(content, msg)
-#     return resp_xml
 
 '''
 调用小说查询
@@ -269,10 +232,6 @@ def remove_img_bg(msg, accessToken=None):
         if msg.type == 'text':
             no_bg_img_path = wechat.rmBg.get_result_bytaskid(msg.content)
             if no_bg_img_path:
-                # print(no_bg_img_path)
-                # resp_xml = create_reply(
-                #     no_bg_img_path, message=msg, render=True)
-                # return resp_xml
                 media_id = upload(
                     'image', no_bg_img_path, accessToken)
                 from wechatpy.messages import ImageMessage
@@ -290,7 +249,7 @@ def remove_img_bg(msg, accessToken=None):
         import threading
         print(threading.current_thread().name, taskid)
 
-        text = '图片处理中，请稍后。。。图片处理完成后需要发送如下验证码下载处理后的图片：%s' % taskid
+        text = '下载注意事项：请用[5a4490.../red]的格式发送消息，用于下载处理后图像文件。\n颜色默认为白色(white)，同时支持红色(red),蓝色(blue)。\n验证码：%s' % taskid
         resp_xml = create_reply(
             text, message=msg, render=True)
 
