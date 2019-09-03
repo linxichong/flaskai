@@ -2,7 +2,6 @@ from enum import Enum
 import json
 import requests
 from flaskr.base import CoreMixin
-from removebg import RemoveBg
 from ..mpapi import TEMP_FILE_PATH
 import threading
 import time
