@@ -20,6 +20,7 @@ class RemoveBackgroud(CoreMixin):
         self.api_key = self.core.config.get('REMOVEBG_API_KEY')
         self.api_url = self.core.config.get('REMOVEBG_API_URL')
         self.task_ids = {}
+        self.invalid_keys = []
 
     '''
     size  (regular = 0.25 MP, hd = 4 MP, 4k = up to 10 MP)
@@ -55,10 +56,11 @@ class RemoveBackgroud(CoreMixin):
         color = splits[1] if len(splits) > 1 else None
         try:
             img_name = self.task_ids.pop(taskid)
-            if color:
-                add_bgcolor(img_name, getattr(BgColor, color.upper()))
-            else:
-                add_bgcolor(img_name)
+            if img_name != 'error':
+                if color:
+                    add_bgcolor(img_name, getattr(BgColor, color.upper()))
+                else:
+                    add_bgcolor(img_name)
         except Exception as e:
             pass
         return img_name
@@ -79,11 +81,14 @@ def add_bgcolor(file_name, bgColor=BgColor.WHITE):
 def run_removebg_bythread(target, file_name, size, taskid):
     img_file_path = TEMP_FILE_PATH + file_name
     img_file = open(img_file_path, 'rb')
+
+    api_key = get_api_key(target, taskid)
+
     response = requests.post(
         target.api_url,
         files={'image_file': img_file},
         data={'size': size},
-        headers={'X-Api-Key': target.api_key})
+        headers={'X-Api-Key': api_key})
 
     new_img_name = file_name + "_no_bg.png"
 
@@ -92,9 +97,23 @@ def run_removebg_bythread(target, file_name, size, taskid):
         with open(new_img_path, 'wb') as removed_bg_file:
             removed_bg_file.write(response.content)
             target.task_ids[taskid] = new_img_name
+    elif response.status_code == requests.codes.payment:
+        target.invalid_keys.append(api_key)
+        target.task_ids[taskid] = 'error'
+        print('api_key 失效了')
     else:
-        raise Exception()
+        target.task_ids[taskid] = 'error'
+        print('其他异常')
 
     img_file.close()
     # time.sleep(5)
     print(threading.current_thread().name, new_img_name)
+
+
+def get_api_key(target, taskid):
+    keys = list(set(target.api_key).difference(set(target.invalid_keys)))
+    if len(keys) > 0:
+        return keys[0]
+    else:
+        target.task_ids[taskid] = 'error'
+        print('没有可以使用的key了')

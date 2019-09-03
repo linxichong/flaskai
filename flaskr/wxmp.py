@@ -24,13 +24,19 @@ wechat = WechatServer(cache.get('config'))
 commands = {
     # 'm1': '开启聊天机器人',
     'm2': '小说下载',
-    'm3': '消除照片背景',
+    'm3': '证件照制作',
     'm4': '美照评分',
-    'b': '返回主菜单'}
+    'b': '显示菜单栏'}
 # 缓存的命令菜单
 command_domain = {}
 # 缓存的消息ID序列
 message_ids = []
+
+# class Menu:
+#     小说下载 = 'm2',
+#     证件照制作 = 'm3'
+#     美照评分 = 'm4'
+#     返回主菜单 = 'b'
 
 
 @bp.route('/weixin', methods=['GET', 'POST'])
@@ -119,31 +125,89 @@ def handle_time_out(msg):
 def handle_func_context(msg):
     resp_xml = None
     cmd = command_domain.get(msg.source)
-    is_back = False
+    is_show_menu = False
 
     if cmd == None:
-        if msg.type != 'text':
-            is_back = True
-        elif commands.get(msg.content):
-            resp_xml = create_reply('%s[功能开启]' %
-                                    commands.get(msg.content), message=msg, render=True)
-            command_domain[msg.source] = msg.content
-            return make_response(resp_xml)
+        if msg.type not in ['text', 'voice']:
+            is_show_menu = True
         else:
-            is_back = True
-    elif msg.type == 'text':
-        if msg.content == 'b':
-            is_back = True
-        elif msg.content == 't':
-            wechat.rmBg.add_bgcolor('img-2019_08_3123_35_01.jpg_no_bg.png')
+            content = msg.content if msg.type == 'text' else msg.recognition
+            if content == 'b':
+                is_show_menu = True
+            if content in commands:
+                resp_xml = create_reply('%s[功能开启]' %
+                                        commands.get(msg.content), message=msg, render=True)
+                command_domain[msg.source] = content
+                # return make_response(resp_xml)
+            else:
+                is_show_menu = True
 
-    if is_back:
-        command_domain.clear()
+    else:
+        if msg.type in ['text', 'voice']:
+            content = msg.content if msg.type == 'text' else msg.recognition
+            if content == 'b':
+                if msg.source in command_domain:
+                    command_domain.pop(msg.source)
+                is_show_menu = True
+            elif content in commands:
+                resp_xml = create_reply('%s[功能开启]' %
+                                        commands.get(msg.content), message=msg, render=True)
+                command_domain[msg.source] = content
+        
+        if not resp_xml and not is_show_menu:
+            if cmd == 'm1' or cmd == 'm2':
+                resp_xml = chk_msg_types(msg, ['text', 'voice'], '该功能只能处理文本或语音数据。')
+            # elif cmd == 'm3' or cmd == 'm4':
+            #     resp_xml = chk_msg_types(msg, ['image'], '该功能只能处理图像数据。')
+        
+        
+        # if not resp_xml and msg.type in ['text', 'voice']:
+        #     content = msg.content if msg.type == 'text' else msg.recognition
+        #     if content == 'b':
+        #         if msg.source in command_domain:
+        #             command_domain.pop(msg.source)
+        #         is_show_menu = True
+        #     elif content in commands:
+        #         resp_xml = create_reply('%s[功能开启]' %
+        #                                 commands.get(msg.content), message=msg, render=True)
+        #         command_domain[msg.source] = content
+                
+
+    if resp_xml:
+        return make_response(resp_xml)
+    # if msg.type == 'text':
+    #     if msg.content == 'b':
+    #         if msg.source in command_domain:
+    #             command_domain.pop(msg.source)
+    #         is_show_menu = True
+    #     elif msg.content == 't':
+    #         wechat.rmBg.add_bgcolor('img-2019_08_3123_35_01.jpg_no_bg.png')
+    #     elif cmd == None:
+    #         if msg.type != 'text':
+    #             is_show_menu = True
+    #         elif commands.get(msg.content):
+    #             resp_xml = create_reply('%s[功能开启]' %
+    #                                     commands.get(msg.content), message=msg, render=True)
+    #             command_domain[msg.source] = msg.content
+    #             return make_response(resp_xml)
+    #         else:
+    #             is_show_menu = True
+
+    if is_show_menu:
+        # command_domain.clear()
         resp_xml = get_menu_reply(msg)
         return make_response(resp_xml)
 
     return None
 
+
+def chk_msg_types(msg, types, message):
+    flag = True if msg.type in types else False
+    resp_xml = None
+    if not flag:
+        resp_xml = create_reply(
+            message, message=msg, render=True)
+    return resp_xml
 
 '''
 使用微信提供的语音解析功能获取转换结果
@@ -162,11 +226,7 @@ def handle_voice_msg(msg):
 def call_tuling_robot(msg):
     resp_xml = None
     try:
-        resp_xml, content = '', None
-        if msg.type == 'voice':
-            content = msg.recognition
-        elif msg.type == 'text':
-            content = msg.content
+        content = msg.content if msg.type == 'text' else msg.recognition
 
         text = wechat.robot.get_reply(msg.content)
         resp_xml = create_reply(text, message=msg, render=True)
@@ -175,17 +235,18 @@ def call_tuling_robot(msg):
 
     return resp_xml
 
+
 '''
 调用小说查询
 '''
 
 
 def call_find_novel(msg):
-    if msg.type != 'text':
-        return get_error_reply(msg)
     resp_xml = None
     data = ''
     try:
+        content = msg.content if msg.type == 'text' else msg.recognition
+
         db = get_spider_db()
         colection = db.books
 
@@ -207,10 +268,6 @@ def call_find_novel(msg):
             if size > max_size:
                 data += '满足条件的小说共%s本，现仅列出前10本，请重新输入查询条件精确查找：\n\n' % size
             data += text[:-1]
-        # elif size == 1:
-        #     data.append(get_article(results[0]))
-        # else:
-        #     data = '客官，您要的书没找到也，换换别的吧。'
 
         resp_xml = create_reply(data, message=msg, render=True)
     except Exception as e:
@@ -231,7 +288,9 @@ def remove_img_bg(msg, accessToken=None):
     try:
         if msg.type == 'text':
             no_bg_img_path = wechat.rmBg.get_result_bytaskid(msg.content)
-            if no_bg_img_path:
+            if no_bg_img_path == 'error':
+                return get_rmbg_error_reply(msg)
+            elif no_bg_img_path:
                 media_id = upload(
                     'image', no_bg_img_path, accessToken)
                 from wechatpy.messages import ImageMessage
@@ -266,10 +325,10 @@ def remove_img_bg(msg, accessToken=None):
 
 @wechat.access_token
 def photo_score(msg, accessToken=None):
-    if msg.type != 'image':
-        return get_imgerr_reply(msg)
+    resp_xml = chk_msg_types(msg, ['image'], '该功能只能处理图像数据。')
+    if resp_xml:
+        return resp_xml
 
-    resp_xml = None
     try:
         # 通过公众号接收到的图片信息下载图片到本地
         path = download(msg.image, msg.source)
@@ -307,6 +366,16 @@ def photo_score(msg, accessToken=None):
 def get_error_reply(msg):
     return create_reply(
         '服务出现异常，请稍后再试。', message=msg, render=True)
+
+
+'''
+生成通用异常回复消息
+'''
+
+
+def get_rmbg_error_reply(msg):
+    return create_reply(
+        '转换失败，请重试。重试以后还是不行，服务可能不可用了，见谅。', message=msg, render=True)
 
 
 '''
