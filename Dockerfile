@@ -3,16 +3,16 @@ FROM python:3.7
 # 安装nginx与supervisor
 RUN apt-get update && apt-get install -y nginx supervisor
 # 安装gevent与gunicorn
-RUN pip install gunicorn
+RUN pip install gunicorn pipenv
 # 解决输出可能的中文乱码
 ENV PYTHONIOENCODING=utf-8
 
 # 创建并设置工作目录
 WORKDIR /project/flaskai
 # 拷贝包文件到工作目录
-COPY requirements.txt /project/flaskai
+COPY Pipfile* /project/flaskai/
 # 安装包
-RUN pip install -r requirements.txt
+RUN pipenv install && pipenv run
 
 # nginx配置相关
 # 删除默认的有效配置，sites-enabled 目录下的配置文件才能够真正被用户访问

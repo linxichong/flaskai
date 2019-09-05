@@ -1,9 +1,0 @@
-Flask
-pymongo
-pyquery
-PyYAML
-requests
-wechatpy
-opencv-python
-cryptography
-Pillow
