@@ -12,7 +12,7 @@ WORKDIR /project/flaskai
 # 拷贝包文件到工作目录
 COPY Pipfile* /project/flaskai/
 # 安装包
-RUN pipenv install && pipenv run
+RUN pipenv install --system
 
 # nginx配置相关
 # 删除默认的有效配置，sites-enabled 目录下的配置文件才能够真正被用户访问
