@@ -1,0 +1,17 @@
+version: "3.3"
+
+services:
+  api:
+    stdin_open: true
+    tty: true
+    build: .
+    image: nginx-gunicorn-flask:latest
+    volumes:
+      - ./flaskr:/project/flaskai/flaskr
+      - ./instance:/project/flaskai/instance
+      - ./nginx.conf:/etc/nginx/sites-available/nginx.conf
+      - ./gunicorn.conf:/etc/supervisor/conf.d/gunicorn.conf
+      - ./supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+    ports:
+      - "80:80"
+    command: "/usr/bin/supervisord"
