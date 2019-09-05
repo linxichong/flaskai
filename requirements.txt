@@ -7,3 +7,5 @@ wechatpy
 opencv-python
 cryptography
 Pillow
+gevent
+gunicorn
