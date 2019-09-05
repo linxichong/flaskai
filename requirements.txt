@@ -7,5 +7,6 @@ wechatpy
 opencv-python
 cryptography
 Pillow
+# 部署环境用
 gevent
 gunicorn
