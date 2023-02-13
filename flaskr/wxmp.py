@@ -22,7 +22,7 @@ bp = Blueprint('wxmp', __name__)
 wechat = WechatServer(cache.get('config'))
 # 菜单命令
 commands = {
-    # 'm1': '开启聊天机器人',
+    'm1': '开启聊天机器人',
     'm2': '小说下载',
     'm3': '证件照制作',
     'm4': '美照评分',
@@ -77,7 +77,7 @@ def wxmp():
         funcId = command_domain.get(msg.source)
         # 调用图灵聊天机器人（需要认证暂时关闭）
         if funcId == 'm1':
-            resp_xml = call_tuling_robot(msg)
+            resp_xml = call_chargpt_robot(msg)
         # 小说查询
         elif funcId == 'm2':
             resp_xml = call_find_novel(msg)
@@ -223,7 +223,7 @@ def handle_voice_msg(msg):
 '''
 
 
-def call_tuling_robot(msg):
+def call_chargpt_robot(msg):
     resp_xml = None
     try:
         content = msg.content if msg.type == 'text' else msg.recognition

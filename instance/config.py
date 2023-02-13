@@ -19,6 +19,9 @@ class Config:
     # 消除照片背景
     REMOVEBG_API_URL = 'https://api.remove.bg/v1.0/removebg'
     REMOVEBG_API_KEY = ['VM86pZ5o5ZMAqeLkgzujaLuv', 'yA3GCc4qTtZtoZkQZW5nRmmZ']
+    
+    CHAT_GPT_EMAIL = "gogailinxichong@gmail.com"
+    CHAT_GPT_PASSWORD = "wk830725"
 
 
 class Development(Config):

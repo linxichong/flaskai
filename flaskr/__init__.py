@@ -4,7 +4,8 @@ import os
 from flask import Flask, request, g, flash, render_template, current_app
 from wechatpy.exceptions import InvalidSignatureException
 from wechatpy.utils import check_signature
-from werkzeug.contrib.cache import SimpleCache
+from cachelib import SimpleCache
+# from werkzeug.contrib.cache import SimpleCache
 from instance.config import Config
 
 cache = SimpleCache()
