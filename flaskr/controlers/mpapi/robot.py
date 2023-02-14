@@ -61,9 +61,9 @@ class ChatGPTRobot(ChatRobot):
         
         self.bot = Chatbot(email=mail, password=password)
 
-    def get_reply(self, input_text):
+    async def get_reply(self, input_text):
         res = []
-        for line in self.bot.ask(input_text):
+        async for line in self.bot.ask(input_text):
             res.append(line["choices"][0]["text"].replace("<|im_end|>", ""), end="")
 
         return "\r\n".split(res)

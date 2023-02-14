@@ -40,7 +40,7 @@ message_ids = []
 
 
 @bp.route('/weixin', methods=['GET', 'POST'])
-def wxmp():
+async def wxmp():
     if request.method == "GET":
         # 微信加密签名
         signature = request.args.get('signature')
@@ -77,7 +77,7 @@ def wxmp():
         funcId = command_domain.get(msg.source)
         # 调用图灵聊天机器人（需要认证暂时关闭）
         if funcId == 'm1':
-            resp_xml = call_chargpt_robot(msg)
+            resp_xml = await call_chargpt_robot(msg)
         # 小说查询
         elif funcId == 'm2':
             resp_xml = call_find_novel(msg)
@@ -223,12 +223,13 @@ def handle_voice_msg(msg):
 '''
 
 
-def call_chargpt_robot(msg):
+async def call_chargpt_robot(msg):
     resp_xml = None
     try:
         content = msg.content if msg.type == 'text' else msg.recognition
-
-        text = wechat.robot.get_reply(content)
+        # import asyncio
+        # asyncio.run(wechat.robot.get_reply(content))
+        text = await wechat.robot.get_reply(content)
         resp_xml = create_reply(text, message=msg, render=True)
     except Exception as e:
         resp_xml = get_error_reply(msg)
