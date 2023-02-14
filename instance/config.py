@@ -13,9 +13,9 @@ class Config:
     FACE_APP_ID = '2116712604'
     FACE_APP_KEY = 'hlYUQ4dNltZLZ9Q0'
     FACE_API_URL = 'https://api.ai.qq.com/fcgi-bin/face/face_detectface'
-    # 图灵机器人
-    TULING_API_URL = 'http://openapi.tuling123.com/openapi/api/v2'
-    TULING_API_KEY = 'c9dd7250422742bc8f0405b12c655b6c'
+    # # 图灵机器人
+    # TULING_API_URL = 'http://openapi.tuling123.com/openapi/api/v2'
+    # TULING_API_KEY = 'c9dd7250422742bc8f0405b12c655b6c'
     # 消除照片背景
     REMOVEBG_API_URL = 'https://api.remove.bg/v1.0/removebg'
     REMOVEBG_API_KEY = ['VM86pZ5o5ZMAqeLkgzujaLuv', 'yA3GCc4qTtZtoZkQZW5nRmmZ']

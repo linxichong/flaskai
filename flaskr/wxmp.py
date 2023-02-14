@@ -23,9 +23,9 @@ wechat = WechatServer(cache.get('config'))
 # 菜单命令
 commands = {
     'm1': '开启聊天机器人',
-    'm2': '小说下载',
-    'm3': '证件照制作',
-    'm4': '美照评分',
+    # 'm2': '小说下载',
+    # 'm3': '证件照制作',
+    # 'm4': '美照评分',
     'b': '显示菜单栏'}
 # 缓存的命令菜单
 command_domain = {}
@@ -219,7 +219,7 @@ def handle_voice_msg(msg):
 
 
 '''
-调用图灵聊天机器人
+调用chargpt
 '''
 
 
@@ -228,7 +228,7 @@ def call_chargpt_robot(msg):
     try:
         content = msg.content if msg.type == 'text' else msg.recognition
 
-        text = wechat.robot.get_reply(msg.content)
+        text = wechat.robot.get_reply(content)
         resp_xml = create_reply(text, message=msg, render=True)
     except Exception as e:
         resp_xml = get_error_reply(msg)

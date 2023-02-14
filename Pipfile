@@ -16,6 +16,7 @@ Flask = "*"
 PyYAML = "*"
 Pillow = "*"
 revchatgpt = "*"
+cachelib = "*"
 
 [requires]
 python_version = "3.9"

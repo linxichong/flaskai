@@ -1,8 +1,7 @@
 from .storage import PickleStorage
 from .token import TokenClass
 from .face import FaceRecognition
-from .robot import TulingRobot, ChatGPTRobot
-from ..spiderapi.bookspider import BookSpider
+from .robot import ChatGPTRobot
 from .removeBg import RemoveBackgroud
 
 class WechatServer:
@@ -12,7 +11,6 @@ class WechatServer:
         self.token = TokenClass(self)
         self.face = FaceRecognition(self)
         self.robot = ChatGPTRobot(self)
-        self.book_spider = BookSpider(self)
         self.rmBg = RemoveBackgroud(self)
     
     def access_token(self, fn):
