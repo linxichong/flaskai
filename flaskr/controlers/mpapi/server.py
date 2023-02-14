@@ -1,6 +1,6 @@
 from .storage import PickleStorage
 from .token import TokenClass
-from .face import FaceRecognition
+# from .face import FaceRecognition
 from .robot import ChatGPTRobot
 from .removeBg import RemoveBackgroud
 
@@ -9,7 +9,7 @@ class WechatServer:
         self.config = config
         self.atStorage = atStorage or PickleStorage()
         self.token = TokenClass(self)
-        self.face = FaceRecognition(self)
+        # self.face = FaceRecognition(self)
         self.robot = ChatGPTRobot(self)
         self.rmBg = RemoveBackgroud(self)
     
