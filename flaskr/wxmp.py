@@ -40,7 +40,7 @@ message_ids = []
 
 
 @bp.route('/weixin', methods=['GET', 'POST'])
-async def wxmp():
+def wxmp():
     if request.method == "GET":
         # 微信加密签名
         signature = request.args.get('signature')
@@ -75,11 +75,11 @@ async def wxmp():
 
         # 获取功能菜单
         funcId = command_domain.get(msg.source)
-        # 调用图灵聊天机器人（需要认证暂时关闭）
-        if funcId == 'm1':
-            resp_xml = await call_chargpt_robot(msg)
+        # # 调用图灵聊天机器人（需要认证暂时关闭）
+        # if funcId == 'm1':
+        #     resp_xml = await call_chargpt_robot(msg)
         # 小说查询
-        elif funcId == 'm2':
+        if funcId == 'm2':
             resp_xml = call_find_novel(msg)
         # 消除照片背景
         elif funcId == 'm3':
