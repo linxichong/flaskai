@@ -37,8 +37,8 @@ def create_app(test_config=None):
     from . import wxmp
     app.register_blueprint(wxmp.bp)
 
-    from . import spider
-    app.register_blueprint(spider.bp)
+    # from . import spider
+    # app.register_blueprint(spider.bp)
     
     @app.route('/')
     def hello():

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "249822795159ee8591d207cd7b181fc248e4a186ba215dec53e74b4854f16d4d"
+            "sha256": "59d793e0f9aa0c86ca8de1d81e57be30ed336a3189a68e6a9acbb2f01a6e274e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -39,6 +39,14 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==2.0.1"
+        },
+        "cachelib": {
+            "hashes": [
+                "sha256:42d49f2fad9310dd946d7be73d46776bcd4d5fde4f49ad210cfdd447fbdfc346",
+                "sha256:593faeee62a7c037d50fc835617a01b887503f972fb52b188ae7e50e9cb69740"
+            ],
+            "index": "pypi",
+            "version": "==0.10.2"
         },
         "certifi": {
             "hashes": [
@@ -268,7 +276,7 @@
                 "sha256:224e32b03eb46be70e12ef6d64e0be123a64e621ab4c0822ff6d450d52a540b9",
                 "sha256:89141536394f909066cabd112e3e1a37e4e654db00a25308b0f130bc3152eb46"
             ],
-            "markers": "python_version >= '3.7' and python_version < '4.0'",
+            "markers": "python_version >= '3.7' and python_version < '4'",
             "version": "==2.3.0"
         },
         "filelock": {
@@ -767,7 +775,7 @@
                 "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86",
                 "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==2.8.2"
         },
         "pyyaml": {
@@ -920,11 +928,11 @@
         },
         "revchatgpt": {
             "hashes": [
-                "sha256:09844ecebf4f75e64e6e70a986763104b1536fd8e69960581eb27c0b3cedf3b0",
-                "sha256:9e3f0de00ef56e0603251d9d0706ebb88635f1db96c3b294cb6646c66d9eb11a"
+                "sha256:d33dacd973972b3c2522a70b28b54ffb660636a274c32c417df97a793b8f8202",
+                "sha256:fdec740d6af53bdc2dd7a52d8013a25d0e1d9959b80825aa411a6a0380fcd65a"
             ],
             "index": "pypi",
-            "version": "==2.2.0"
+            "version": "==2.2.2"
         },
         "rfc3986": {
             "extras": [
@@ -941,7 +949,7 @@
                 "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
                 "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==1.16.0"
         },
         "sniffio": {
